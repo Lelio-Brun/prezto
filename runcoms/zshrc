@@ -11,3 +11,21 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+
+# OPAM configuration
+. /home/lelio/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+alias ouu='opam update -u'
+alias ouus='opam update; for s in $(opam switch list -is); do echo "upgrading $s switch..."; opam upgrade --switch=$s; done'
+alias osw='opam switch'
+alias oce='eval `opam config env`'
+alias oss='osw show'
+
+alias la='ls -A'
+alias lal='la -lh'
+
+alias pac='pacaur'
+alias paci='pac -Syu'
+alias pacx='pac -Rsn'
+
+alias xdg-wrap='ocaml ${HOME}/.scripts/xdg-wrap.ml'
