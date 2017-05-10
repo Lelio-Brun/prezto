@@ -29,3 +29,5 @@ alias paci='pac -Syu'
 alias pacx='pac -Rsn'
 
 alias xdg-wrap='ocaml ${HOME}/.scripts/xdg-wrap.ml'
+
+alias tab='qpdfview --unique'
