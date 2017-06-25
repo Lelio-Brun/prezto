@@ -67,7 +67,7 @@ function prompt_lelio_setup {
   unsetopt XTRACE KSH_ARRAYS
   prompt_opts=(cr percent subst)
   _prompt_lelio_precmd_async_pid=0
-  _prompt_sorin_precmd_async_data=$(mktemp "${TMPDIR:-/tmp}/lelio-prompt-async-XXXXXXXXXX")
+  _prompt_lelio_precmd_async_data=$(mktemp "${TMPDIR:-/tmp}/lelio-prompt-async-XXXXXXXXXX")
 
   # Load required functions.
   autoload -Uz add-zsh-hook
