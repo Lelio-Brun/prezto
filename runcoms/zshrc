@@ -27,7 +27,10 @@ alias lal='la -lh'
 alias pac='pacaur'
 alias paci='pac -Syu'
 alias pacx='pac -Rsn'
+alias pacc='pac -Sc'
 
 alias xdg-wrap='ocaml ${HOME}/.scripts/xdg-wrap.ml'
 
 alias tab='qpdfview --unique'
+# added by travis gem
+[ -f /home/lelio/.travis/travis.sh ] && source /home/lelio/.travis/travis.sh
