@@ -32,5 +32,8 @@ alias pacc='pac -Sc'
 alias xdg-wrap='ocaml ${HOME}/.scripts/xdg-wrap.ml'
 
 alias tab='qpdfview --unique'
+
+alias gcfg='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
 # added by travis gem
 [ -f /home/lelio/.travis/travis.sh ] && source /home/lelio/.travis/travis.sh
