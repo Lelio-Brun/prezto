@@ -53,7 +53,7 @@ function prompt_lelio_precmd {
   local switch_name="$(tail -n 1 ~/.opam/config | grep -Po '"\K.*(?=")')"
   local env_switch_name="$(which ocamlc | grep -Po '.opam/\K([^/]+)(?=/)')"
   if [ "$switch_name" = "$env_switch_name" ]; then
-      _prompt_lelio_opam="%F{3}$switch_name"
+      _prompt_lelio_opam="%F{8}$switch_name"
   else
       _prompt_lelio_opam="%F{1}$switch_name"
   fi
