@@ -18,8 +18,11 @@ fi
 alias ouu='opam update -u'
 alias ouus='opam update; for s in $(opam switch list -is | head -n -1); do echo "upgrading $s switch..."; opam upgrade --switch=$s; done'
 alias osw='opam switch'
+alias osw_='opam-switch-eval'
 alias oce='eval `opam config env`'
 alias oss='osw show'
+
+complete -C 'opam switch list --safe -s -i 2>/dev/null' opam-switch-eval
 
 alias la='ls -A'
 alias lal='la -lh'
