@@ -16,8 +16,7 @@ fi
 . /home/lelio/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 alias ouu='opam update -u'
-alias ouus='opam update; for s in $(opam switch list -is | head -n -1); do echo "upgrading $s switch..."; opam 
-upgrade --safe --switch=$s; done'
+alias ouus='opam update; for s in $(opam switch list -is | head -n -1); do echo "upgrading $s switch..."; opam upgrade --safe --switch=$s; done'
 alias osw='opam switch'
 alias osw_='opam-switch-eval'
 alias oce='eval `opam config env`'
