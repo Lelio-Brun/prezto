@@ -12,3 +12,4 @@ fi
 
 PATH=$PATH:/usr/bin/core_perl
 PATH=$PATH:~/.gem/ruby/2.4.0/bin
+PATH=$PATH:~/.local/bin
