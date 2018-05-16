@@ -35,6 +35,8 @@ alias tab='qpdfview --unique'
 
 alias gcfg='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
+alias checklibs="sudo lsof +c 0 | grep 'DEL.*lib' | awk '1 { print \$1 \": \" \$NF }' | sort -u"
+
 function extract {
     if [ -z "$1" ]; then
         # display usage if no parameters given
