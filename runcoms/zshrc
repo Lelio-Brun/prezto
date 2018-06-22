@@ -15,14 +15,18 @@ fi
 # OPAM configuration
 . /home/lelio/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
+# Load the opam-switch-eval script
+. /home/lelio/.scripts/opam_switch_eval.sh > /dev/null 2> /dev/null || true
+
 alias ouu='opam update -u'
 alias ouus='opam update; for s in $(opam switch list -is | head -n -1); do printf "\nupgrading $s switch...\n"; opam upgrade --switch=$s; done'
-alias osw='opam switch'
-alias osw_='opam-switch-eval'
+alias osw='opam-switch-eval'
+alias oswl='opam-switch-eval-local'
 alias oce='eval `opam config env`'
-alias oss='osw show'
+alias oss='opam switch show'
 
 complete -C 'opam switch list --safe -s -i 2>/dev/null' opam-switch-eval
+complete -C 'opam switch list --safe -s -i 2>/dev/null' opam-switch-eval-local
 
 alias la='ls -A'
 alias lal='la -lh'
@@ -33,7 +37,7 @@ alias xdg-wrap='ocaml ${HOME}/.scripts/xdg-wrap.ml'
 
 alias tab='qpdfview --unique'
 
-alias gcfg='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias gcfg='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 alias checklibs="sudo lsof +c 0 | grep 'DEL.*lib' | awk '1 { print \$1 \": \" \$NF }' | sort -u"
 

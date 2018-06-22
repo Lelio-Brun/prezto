@@ -55,7 +55,7 @@ function prompt_lelio_precmd {
   if [ "$switch_name" = "$env_switch_name" ]; then
       _prompt_lelio_opam="%F{8}$switch_name"
   else
-      _prompt_lelio_opam="%F{1}$switch_name"
+      _prompt_lelio_opam="%F{1}$env_switch_name %F{8}$switch_name"
   fi
 
   # Run python info (this should be fast and not require any async)
