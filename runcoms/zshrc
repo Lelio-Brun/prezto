@@ -13,16 +13,12 @@ fi
 # Customize to your needs...
 
 # OPAM configuration
-. /home/lelio/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
-# Load the opam-switch-eval script
-. /home/lelio/.scripts/opam_switch_eval.sh > /dev/null 2> /dev/null || true
+test -r /home/lelio/.opam/opam-init/init.zsh && . /home/lelio/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 alias ouu='opam update -u'
-alias ouus='opam update; for s in $(opam switch list -is | head -n -1); do printf "\nupgrading $s switch...\n"; opam upgrade --switch=$s; done'
-alias osw='opam-switch-eval'
-alias oswl='opam-switch-eval-local'
-alias oce='eval `opam config env`'
+alias ouus='opam update; for s in $(opam switch list -s | head -n -1); do printf "\nupgrading $s switch...\n"; opam upgrade --switch=$s; done'
+alias osw='opam switch'
+alias oce='eval `opam env`'
 alias oss='opam switch show'
 
 complete -C 'opam switch list --safe -s -i 2>/dev/null' opam-switch-eval
