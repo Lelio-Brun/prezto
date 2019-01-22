@@ -42,7 +42,8 @@ zstyle ':prezto:load' pmodule \
   'command-not-found' \
   'fasd' \
   'prompt' \
-  'pacman'
+  'pacman' \
+  'archive'
 
 #
 # Autosuggestions
