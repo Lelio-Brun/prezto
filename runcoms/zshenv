@@ -15,8 +15,12 @@ PATH=$PATH:~/.gem/ruby/2.4.0/bin
 PATH=$PATH:~/.local/bin
 PATH=$PATH:~/bin
 
-QT_STYLE_OVERRIDE=breeze
-QT_QPA_PLATFORMTHEME="qt5ct"
-QT_AUTO_SCREEN_SCALE_FACTOR=0
+export QT_STYLE_OVERRIDE=breeze
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
 
 export OPAMUTF8MSGS=1
+
+PATH=$HOME/.node_modules/bin:$PATH
+export npm_config_prefix=~/.node_modules
+
+PATH=$HOME/.emacs.d/bin:$PATH

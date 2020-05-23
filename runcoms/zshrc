@@ -37,14 +37,12 @@ alias gcfg='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 alias checklibs="sudo lsof +c 0 | grep 'DEL.*lib' | awk '1 { print \$1 \": \" \$NF }' | sort -u"
 
-alias tlmgr-wrap='ocaml ${HOME}/.scripts/tlmgr.ml'
-
-# alias tlmgr_search='tlmgr search --global --file'
-# alias tlmgr_install='tlmgr install'
-# alias tlmgr_update='tlmgr update --self --all && tlmgr path add && fmtutil-sys --all'
-
 # added by travis gem
 [ -f /home/lelio/.travis/travis.sh ] && source /home/lelio/.travis/travis.sh
 
 # keybase completion
 test -r /home/lelio/.keybase-completion/keybase && source $_
+
+_SILENT_JAVA_OPTIONS="$_JAVA_OPTIONS"
+unset _JAVA_OPTIONS
+alias java='java "$_SILENT_JAVA_OPTIONS"'
