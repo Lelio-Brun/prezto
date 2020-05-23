@@ -1,25 +1,36 @@
 # Load dependencies.
 pmodload 'helper'
 
-function prompt_lelio_git_info {
-  # We can safely split on ':' because it isn't allowed in ref names.
-  IFS='' read _git_target _git_post_target <<<"$3"
+function prompt_lelio_async_callback {
+  case $1 in
+    prompt_lelio_async_git)
+      # We can safely split on ':' because it isn't allowed in ref names.
+      IFS=':' read _git_target _git_post_target <<<"$3"
 
-  # The target actually contains 3 space separated possibilities, so we need to
-  # make sure we grab the first one.
-  # _git_target=$(coalesce ${(@)${(z)_git_target}})
+      # The target actually contains 3 space separated possibilities, so we need to
+      # make sure we grab the first one.
+      _git_target=$(coalesce ${(@)${(z)_git_target}})
 
-  if [[ -z "$_git_target" ]]; then
-    # No git target detected, flush the git fragment and redisplay the prompt.
-    if [[ -n "$_prompt_lelio_git" ]]; then
-      _prompt_lelio_git=''
-      zle && zle reset-prompt
-    fi
-  else
-    # Git target detected, update the git fragment and redisplay the prompt.
-    _prompt_lelio_git="${(e)_git_target}${_git_post_target}"
-    zle && zle reset-prompt
-  fi
+      if [[ -z "$_git_target" ]]; then
+        # No git target detected, flush the git fragment and redisplay the prompt.
+        if [[ -n "$_prompt_lelio_git" ]]; then
+          _prompt_lelio_git=''
+          zle && zle reset-prompt
+        fi
+      else
+        # Git target detected, update the git fragment and redisplay the prompt.
+        _prompt_lelio_git=" ${(e)_git_target}${_git_post_target}"
+        zle && zle reset-prompt
+      fi
+      ;;
+    "[async]")
+      # Code is 1 for corrupted worker output and 2 for dead worker.
+      if [[ $2 -eq 2 ]]; then
+	  # Our worker died unexpectedly.
+          typeset -g prompt_prezto_async_init=0
+      fi
+      ;;
+  esac
 }
 
 function prompt_lelio_async_git {
@@ -30,15 +41,28 @@ function prompt_lelio_async_git {
   fi
 }
 
+function prompt_lelio_async_tasks {
+  # Initialize async worker. This needs to be done here and not in
+  # prompt_sorin_setup so the git formatting can be overridden by other prompts.
+  if (( !${prompt_prezto_async_init:-0} )); then
+    async_start_worker prompt_lelio -n
+    async_register_callback prompt_lelio prompt_lelio_async_callback
+    typeset -g prompt_prezto_async_init=1
+  fi
+
+  # Kill the old process of slow commands if it is still running.
+  async_flush_jobs prompt_lelio
+
+  # Compute slow commands in the background.
+  async_job prompt_lelio prompt_lelio_async_git "$PWD"
+}
+
 function prompt_lelio_precmd {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
 
   # Format PWD.
   _prompt_lelio_pwd=$(prompt-pwd)
-
-  # Kill the old process of slow commands if it is still running.
-  async_flush_jobs async_lelio_git
 
   # Handle updating git data. We also clear the git prompt data if we're in a
   # different git root now.
@@ -63,16 +87,13 @@ function prompt_lelio_precmd {
     python-info
   fi
 
-  # Compute slow commands in the background.
-  async_job async_lelio_git prompt_lelio_async_git "$PWD"
+  prompt_lelio_async_tasks
 }
 
 function prompt_lelio_setup {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
   prompt_opts=(cr percent sp subst)
-  _prompt_lelio_precmd_async_pid=0
-  _prompt_lelio_precmd_async_data=$(mktemp "${TMPDIR:-/tmp}/lelio-prompt-async-XXXXXXXXXX")
 
   # Load required functions.
   autoload -Uz add-zsh-hook
@@ -80,6 +101,9 @@ function prompt_lelio_setup {
 
   # Add hook for calling git-info before each command.
   add-zsh-hook precmd prompt_lelio_precmd
+
+  # Tell prezto we can manage this prompt
+  zstyle ':prezto:module:prompt' managed 'yes'
 
   # Set editor-info parameters.
   zstyle ':prezto:module:editor:info:completing' format '%B%F{7}...%f%b'
@@ -115,8 +139,6 @@ function prompt_lelio_setup {
   zstyle ':prezto:module:python:info:virtualenv' format '%f%F{3}(%v)%F{7} '
 
   # Get the async worker set up
-  async_start_worker async_lelio_git -n
-  async_register_callback async_lelio_git prompt_lelio_git_info
   _lelio_cur_git_root=''
 
   _prompt_lelio_git=''
